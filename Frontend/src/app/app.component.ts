@@ -30,9 +30,20 @@ export class AppComponent implements OnInit{
       return;
     }
 
+    let task: Task = {
+      id: 0,
+      title: taskName,
+      isDone: false
+    };
+
     this.httpService
-      .addData('/todo/api/', taskName)
-      .subscribe((task: Task) => {
+      .addData(
+        'http://localhost:5064/api/todo/', 
+        task
+      )
+      .subscribe((id: number) => {
+        task.id = id;
+
         this.tasks.push(
           task
         );
@@ -55,15 +66,17 @@ export class AppComponent implements OnInit{
   onComplete(id: number): void {
     const findIndex = this.tasks.findIndex(task => task.id == id);
 
-    this.httpService
-      .updateData('/todo/api/', this.tasks[findIndex])
+    if (findIndex >= 0) {
+      this.httpService
+      .updateData('http://localhost:5064/api/todo/' + id, this.tasks[findIndex])
       .subscribe((task: Task) => {
         this.completeTasks.push(
-          task
+          this.tasks[findIndex]
         );
 
         this.tasks.splice(findIndex, 1);
       });
+    }
   }
 
   /**
@@ -71,19 +84,25 @@ export class AppComponent implements OnInit{
    */
   ngOnInit(): void {
     this.httpService
-      .getAllData('/todo/api/')
+      .getAllData('http://localhost:5064/api/todo/')
       .subscribe((data: Task[]) => {
-
+        
         for (let value of data) {
-          if (!value.hasOwnProperty('id') || !value.hasOwnProperty('name')) {
+          if (!value.hasOwnProperty('id') || !value.hasOwnProperty('title')) {
             continue;
           }
 
-          this.tasks.push({
+          let task: Task = {
             id: value.id,
             title: value.title,
             isDone: value.isDone
-          });
+          };
+
+          if (task.isDone) {
+            this.completeTasks.push(task);
+          } else {
+            this.tasks.push(task);
+          }
         }
       });
   }

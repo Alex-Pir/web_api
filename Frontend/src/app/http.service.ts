@@ -11,7 +11,7 @@ export class HttpService {
   }
 
   addData(url: string, data: any) {
-    return this.httpClient.post<Task>(url, data);
+    return this.httpClient.post<number>(url, data);
   }
 
   updateData(url: string, data: any) {
