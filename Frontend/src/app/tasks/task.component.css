@@ -1,0 +1,21 @@
+div.task {
+  position: relative;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button.complete-task {
+  background-color: #66c2ff;
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+button.complete-task:hover {
+  background-color: #03a9f4;
+}
+

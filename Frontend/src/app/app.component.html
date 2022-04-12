@@ -1,0 +1,55 @@
+<div class="todo-list">
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [ngClass]="{active: showActiveTasks}"
+        href="#active-task"
+        (click)="showActiveTasks = true"
+      >
+        Список задач
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [ngClass]="{active: !showActiveTasks}"
+        href="#complete-task"
+        (click)="showActiveTasks = completeTasks.length <= 0"
+      >
+        Выполненные задачи
+      </a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="active-task" *ngIf="showActiveTasks">
+      <form #myForm="ngForm" class="task-form">
+        <input ngModel name="task" type="text" placeholder="Введите задачу">
+        <span (click)="addTask(myForm)" class="plus radius"></span>
+      </form>
+
+      <div id="active-task" class="tasks" *ngIf="tasks.length > 0">
+        <task
+          *ngFor="let task of tasks"
+          [task]="task"
+          (onCompleteTask)="onComplete($event)"
+        >
+        </task>
+      </div>
+    </div>
+
+    <div
+      id="complete-task"
+      class="complete-tasks"
+      *ngIf="completeTasks.length > 0 && !showActiveTasks"
+    >
+      <task
+        *ngFor="let task of completeTasks"
+        [task]="task"
+        [isComplete]="true"
+      >
+      </task>
+    </div>
+  </div>
+</div>
