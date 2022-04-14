@@ -59,11 +59,8 @@ export class AppComponent implements OnInit{
     let task = this.tasks.filter(item => item.id == id);
     let isDoneTask = false;
 
-    console.log(task);
-
     if (task.length == 0) {
       task = this.completeTasks.filter(item => item.id == id);
-      console.log(task);
       isDoneTask = true;
     }
     
