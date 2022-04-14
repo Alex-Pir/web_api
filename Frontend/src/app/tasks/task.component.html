@@ -1,9 +1,17 @@
 <div class="task" *ngIf="task">
   <span>{{task.title}}</span>
-  <button
-    *ngIf="!isComplete" (click)="complete()"
-    class="complete-task"
-  >
-    Выполнено
-  </button>
+  <div class="task-buttons">
+    <button
+      *ngIf="!isComplete" (click)="complete()"
+      class="complete-task"
+    >
+      Выполнено
+    </button>
+    <button
+      class="complete-task"
+      (click)="delete()"
+    >
+      Удалить
+    </button>
+  </div>
 </div>
