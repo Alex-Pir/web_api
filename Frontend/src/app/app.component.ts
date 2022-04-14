@@ -14,8 +14,8 @@ export class AppComponent implements OnInit{
   showName: boolean = false;
   showActiveTasks: boolean = true;
   tasks: Array<Task> = [];
-
   completeTasks: Array<Task> = [];
+  url: string = 'http://localhost:5064/api/todo/';
 
   constructor(private httpService: HttpService) {}
 
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit{
 
     this.httpService
       .addData(
-        'http://localhost:5064/api/todo/', 
+        this.url, 
         task
       )
       .subscribe((id: number) => {
@@ -56,7 +56,29 @@ export class AppComponent implements OnInit{
    * Обработчик события удаления задачи
    */
   onDelete(id: number): void {
-    this.tasks = this.tasks.filter(task => task.id != id);
+    let task = this.tasks.filter(item => item.id == id);
+    let isDoneTask = false;
+
+    console.log(task);
+
+    if (task.length == 0) {
+      task = this.completeTasks.filter(item => item.id == id);
+      console.log(task);
+      isDoneTask = true;
+    }
+    
+    if (task.length == 0) {
+      return;
+    }
+
+    this.httpService.deleteData(this.url + id).subscribe(() => {
+      if (isDoneTask) {
+        this.completeTasks = this.completeTasks.filter(item => item.id != id);
+      } else {
+        this.tasks = this.tasks.filter(item => item.id != id);
+      }
+    });
+    
   }
 
   /**
@@ -68,7 +90,7 @@ export class AppComponent implements OnInit{
 
     if (findIndex >= 0) {
       this.httpService
-      .updateData('http://localhost:5064/api/todo/' + id, this.tasks[findIndex])
+      .updateData(this.url + id, this.tasks[findIndex])
       .subscribe((task: Task) => {
         this.completeTasks.push(
           this.tasks[findIndex]
@@ -84,7 +106,7 @@ export class AppComponent implements OnInit{
    */
   ngOnInit(): void {
     this.httpService
-      .getAllData('http://localhost:5064/api/todo/')
+      .getAllData(this.url)
       .subscribe((data: Task[]) => {
         
         for (let value of data) {

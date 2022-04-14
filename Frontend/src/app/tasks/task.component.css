@@ -13,9 +13,14 @@ button.complete-task {
   color: #fff;
   padding: 10px 15px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 button.complete-task:hover {
   background-color: #03a9f4;
+}
+
+button.complete-task:last-child {
+  margin: 0;
 }
 

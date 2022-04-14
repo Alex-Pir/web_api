@@ -34,6 +34,7 @@
           *ngFor="let task of tasks"
           [task]="task"
           (onCompleteTask)="onComplete($event)"
+          (onDeleteTask)="onDelete($event)"
         >
         </task>
       </div>
@@ -48,6 +49,7 @@
         *ngFor="let task of completeTasks"
         [task]="task"
         [isComplete]="true"
+        (onDeleteTask)="onDelete($event)"
       >
       </task>
     </div>
